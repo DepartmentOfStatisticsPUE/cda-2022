@@ -2,4 +2,4 @@
 
 1. Distributions: [basics, codes in Python, R and Julia](notebooks/cda_1_distributions.ipynb)
 2. Generating pseudo random numbers: [basic, codes in Python, R and Julia](notebooks/cda_2_pseudorandom.ipynb)
-3. Maximum likelihood estimation: [codes in Python, R and Julia](notebooks/3_maxlik.ipynb)
+3. Maximum likelihood estimation: [codes in Python, R and Julia](notebooks/cda_3_maxlik.ipynb)
