@@ -1,0 +1,75 @@
+---
+title: "Maxlik and Poisson"
+output: html_document
+date: 'Summer Semester 2022'
+author: 'Cyryl Leszczyński'
+---
+Assume that $X$ follows Poisson distribution given by $P(X=x, \lambda_i) = \frac{\lambda^x e^{-\lambda}}{x!}$
+where $\lambda_i = \theta_0 + \theta_1 \times z_i$, $\theta_0=0.5$, $\theta_1=0.5$, and $z_i \sim \text{Bern}(0.7)$ and number of observations is equal to $n=10,000$. \
+        1. generate $z_i$, \
+        2. generate $\lambda_i$ according to $\theta_0 + \theta_1 \times z_i$, \
+        3. generate $X \sim Poisson(\lambda_i)$ \
+        4. derive log-likelihood, gradient and hessian (by hand, \LaTeX code for equations are preferred), \
+        5. obtain MLE of $\boldsymbol{\theta} = (\theta_0, \theta_1)$ using Newton-Raphson method (gradient and hessian should be applied). \
+        
+---
+
+### Step 1: Generating $z_i$ (and setting up variables)
+
+```{r}
+set.seed(0)
+n <- 10000
+theta_0 <- 0.5
+theta_1 <- 0.5
+
+z_i <- rbinom(n, 1, 0.7) # Bernoulli distribution is the same as binomial with size = 1
+```
+
+### Step 2: generate $\lambda_i$ according to $\theta_0 + \theta_1 \times z_i$
+
+```{r}
+lambda_i <- theta_0 + (theta_1 * z_i)
+```
+
+### Step 3: generate $X \sim Poisson(\lambda_i)$
+```{r}
+X <- rpois(n,lambda_i)
+```
+
+### Step 4: derive log-likelihood, gradient and hessian
+As defined by the task, the distribution is given by $P(X=x, \lambda_i) = \frac{\lambda^x e^{-\lambda}}{x!}$. \
+The log-likelihood of this function is $log(\frac{\lambda^x e^{-\lambda}}{x!}) = -n\cdotp\lambda-\sum log(x!)+ log(\lambda)\cdotp\sum x$.\
+Gradient of the above function is its first derivative: $\frac{\sum x}{\lambda} - n$.
+The Hessian is its second: $-\frac{\sum x}{\lambda ^ 2}$
+
+### Step 5: obtain MLE of $\boldsymbol{\theta} = (\theta_0, \theta_1)$ using Newton-Raphson method (gradient and hessian should be applied).
+Log-likelihood function:
+```{r}
+loglikelihood <- function(par, x) {
+  ll <- -length(x)*par - sum(log(factorial(x))) + log(par) * sum(x)
+  ll
+}
+```
+Gradient of the log-likelihood:
+```{r}
+gradient <- function(par, x)  {
+  grad <- sum(x) / par - length(x)
+  grad
+}
+```
+Hessian of the log-likelihood:
+```{r}
+hessian <- function(par, x) {
+  hess <- -(sum(x)/par^2)
+  hess
+}
+```
+MLE using the Newton-Rhapsod method:
+```{r}
+install.packages("maxLik")
+library("maxLik")
+
+mle_final <- maxLik(logLik = loglikelihood, grad = gradient, hess = hessian, start = 0.5, x = X, method = "NR")
+summary(mle_final)
+mle_final
+```

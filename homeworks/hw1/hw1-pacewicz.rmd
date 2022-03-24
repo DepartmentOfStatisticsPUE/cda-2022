@@ -1,0 +1,58 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(maxLik)
+library(extraDistr)
+
+```
+
+Tasks:
+1) generate zi ,
+2) generate λi according to θ0 + θ1 × zi ,
+3) generate X ∼ Poisson(λi )
+4) derive log-likelihood, gradient and hessian,
+5) obtain MLE of θ = (θ0, θ1) using Newton-Raphson method.
+
+1)
+```{r}
+
+z<-function(i){
+  zi<-rbern(i,0.7)
+  zi[i]}
+z(1:10000)
+z_set<-z(1:10000)
+```
+2)
+```{r}
+lambdaa<- function(i){
+  l1<-0.5+0.5*z(i)
+  l1[i]
+ 
+}
+lambdaa(1:1000)
+
+```
+
+3)
+```{r}
+rpois(10000,lambda = lambdaa(z_set))
+```
+4)
+```{r}
+
+\[ P(X = x, \theta) =\frac{(\theta_{0}+\theta_{1} z_{i})^x e^{\theta_{0}+\theta_{1} z_{i}} }{x_i!}  \]
+
+\[ L=\prod_{i} \frac{(\theta_{0}+\theta_{1} z_{i})^x e^{\theta_{0}+\theta_{1} z_{i}} }{x_i!}\]
+
+\[ \ln{L}=\ln{\prod_{i} \frac{(\theta_{0}+\theta_{1} z_{i})^x e^{\theta_{0}+\theta_{1} z_{i}} }{x_i!}}\]
+
+\[\ln{L}=\sum_{i}x_{i}\log({\theta_{0}+\theta_{1} z_{i}})-n(\theta_{0}+\theta_{1} z_{i})-\sum_{i}\log{x!}\]
+
+Gradient:
+\[\frac{\delta log{L}}{\delta \theta_{0}} = - n + \frac{\sum_{i}x_{i}}{\theta_{0}+\theta_{1} z_{i}}\]
+
+\[\frac{\delta log{L}}{\delta \theta_{1}} = - n z_{i} + \frac{\sum_{i}x_{i} z_{i}}{\theta_{0}+\theta_{1} z_{i}}\]
+
+```

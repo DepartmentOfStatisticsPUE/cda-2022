@@ -1,0 +1,52 @@
+---
+title: "Julia Głowaczewska MaxLik"
+output: html_document
+date: '2022-03-23'
+---
+
+
+```{r}
+# Packages
+library(Rlab)
+library(maxLik)
+
+#Theta0 and Theta1 are the same
+th0 <- 0.5
+th1 <- th0
+
+# Generation of Zi n times
+prob <- 0.7
+z <- rbern(n = 10000,prob = prob)
+
+# Generation of Lambda n times
+lambda <- th0+th1*z
+
+# Generating Poisson according to task n times
+x <- rpois(10000,lambda)
+
+
+# LogLikelihood of function x
+ll <- function(par, x) {
+  m <- -length(x)*par - sum(log(factorial(x))) + log(par) * sum(x)
+  m
+}
+
+## Generating Gradient
+grad <- function(par, x)  {
+  g <- sum(x) / par - length(x)
+  g
+}
+
+
+## Generating Hessian
+hess <- function(par, x) {
+  h <- - (sum(x)/par^2)
+  h
+}
+
+# Calculating MLE
+res2 <- maxLik(logLik = ll,  grad = grad, 
+            hess = hess, start = 5, x = x, method = "NR")
+# Summary
+summary(res2)
+```
