@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 tests/
-homeworks/
-homeworks/hw1/
+homeworks/*
+homeworks/hw1/*
