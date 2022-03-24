@@ -2,5 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-tests
-homeworks	
+tests/
+homeworks/	
