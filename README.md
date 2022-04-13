@@ -9,6 +9,7 @@
 5. Contingency tables, capture-recapture (dual-estimation system): [codes in Python, R and Julia](notebooks/cda_5_cattab.ipynb)
 6. Simple correspondence analysis: [codes in Python, R and Julia](notebooks/cda_6_ca.ipynb)
 7. Categorical data in regression: [codes in Python, R and Julia](notebooks/cda_7_factors_ame.ipynb)
+8. Generalized Linear Models (GLMs): [codes in Python, R and Julia](notebooks/cda_8_glm.ipynb)
 
 ### Homeworks
 
